@@ -64,7 +64,7 @@ module.exports = function (grunt) {
                 console.log('cmds before deploy executed');
 
 
-                var createFolder = 'mkdir ' + options.deploy_path + '/releases/' + timeStamp;
+                var createFolder = 'mkdir -p ' + options.deploy_path + '/releases/' + timeStamp;
                 var removeCurrent = 'rm -rf ' + options.deploy_path + '/current';
                 var setCurrent = 'ln -s releases/' + timeStamp + ' ' + options.deploy_path + '/current';
 
