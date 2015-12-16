@@ -68,19 +68,24 @@ module.exports = function (grunt) {
                 var removeCurrent = 'rm -rf ' + options.deploy_path + '/current';
                 var setCurrent = 'ln -s releases/' + timeStamp + ' ' + options.deploy_path + '/current';
 
-                var commands = createFolder + ' && ' + removeCurrent + ' && ' + setCurrent;
                 console.log('start deploy');
-                exec(commands, false, function () {
+                exec(createFolder, false, function () {
 
                     var execLocal = require('child_process').exec;
                     execLocal("scp -r ./dist/* " + server.username + "@" + server.host + ":" + options.deploy_path + "/releases/" + timeStamp, function (error, stdout, stderr) {
                         console.log('end deploy');
 
-                        console.log('executing cmds after deploy');
-                        execCmds(options.cmds_after_deploy, 0, true, function () {
-                            console.log('cmds after deploy executed');
-                            connection.end();
+                        console.log('removing old symlink and add new: ',removeCurrent + ' && ' + setCurrent);
+                        exec(removeCurrent + ' && ' + setCurrent, false, function () {
+                            console.log('done');
+
+                            console.log('executing cmds after deploy');
+                            execCmds(options.cmds_after_deploy, 0, true, function () {
+                                console.log('cmds after deploy executed');
+                                connection.end();
+                            });
                         });
+
                     });
                 })
             })
