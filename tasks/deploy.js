@@ -72,7 +72,7 @@ module.exports = function (grunt) {
                 exec(createFolder, false, function () {
 
                     var execLocal = require('child_process').exec;
-                    execLocal("scp -r ./dist/* " + server.username + "@" + server.host + ":" + options.deploy_path + "/releases/" + timeStamp, function (error, stdout, stderr) {
+                    execLocal("scp -r ./dist " + server.username + "@" + server.host + ":" + options.deploy_path + "/releases/" + timeStamp, function (error, stdout, stderr) {
                         console.log('end deploy');
 
                         console.log('removing old symlink and add new: ',removeCurrent + ' && ' + setCurrent);
